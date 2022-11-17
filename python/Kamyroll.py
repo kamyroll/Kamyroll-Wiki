@@ -2,7 +2,7 @@
 Project: PythonClient
 Script: Kamyroll.py
 Author: hyugogirubato
-Date: 2022.10.15
+Date: 2022.11.17
 """
 
 import sys
@@ -89,3 +89,6 @@ class Client:
     def updated(self, limit=20):
         params = {'limit': limit}
         return self._makeRequest(f"{self.api}/content/v1/updated", params=params, method='GET', authorization='BEARER').json()
+    
+    def info(self):
+        return self._makeRequest(f"{self.api}/auth/v1/info", method='GET', authorization='BEARER').json()
