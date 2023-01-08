@@ -2,7 +2,7 @@
 Project: PythonClient
 Script: Kamyroll.py
 Author: hyugogirubato
-Date: 2022.11.17
+Date: 2023.01.08
 """
 
 import sys
@@ -26,6 +26,7 @@ class Client:
     def __init__(self, channel_id='crunchyroll', locale='en-US'):
         self.locale = locale
         self.api = 'https://api.kamyroll.tech'
+        # self.api = 'http://localhost:3000'
         self.bearer_expire = 0
         self.bearer_token = None
         if channel_id in self.platforms()['items']:
@@ -58,8 +59,8 @@ class Client:
         return self._makeRequest(f"{self.api}/auth/v1/platforms", method='GET').json()
 
     def getToken(self, device_id='whatvalueshouldbeforweb', device_type='com.service.data'):
-        data = {'device_id': device_id, 'device_type': device_type, 'access_token': APP_TOKEN}
-        j_response = self._makeRequest(f"{self.api}/auth/v1/token", data=data, method='POST').json()
+        params = {'device_id': device_id, 'device_type': device_type, 'access_token': APP_TOKEN}
+        j_response = self._makeRequest(f"{self.api}/auth/v1/token", params=params, method='GET').json()
         self.bearer_token = j_response['access_token']
         self.bearer_expire = j_response['expires_in']
         return j_response
@@ -89,6 +90,6 @@ class Client:
     def updated(self, limit=20):
         params = {'limit': limit}
         return self._makeRequest(f"{self.api}/content/v1/updated", params=params, method='GET', authorization='BEARER').json()
-    
+
     def info(self):
         return self._makeRequest(f"{self.api}/auth/v1/info", method='GET', authorization='BEARER').json()
